@@ -1,0 +1,21 @@
+#pagebutton-container {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.pagebutton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  color: white;
+  text-align: center;
+  font-size: 1em;
+  font-weight: bold;
+  border-radius: 5px;
+  background-color: rgb(240,100,100);
+  margin: 1em .2em;
+}

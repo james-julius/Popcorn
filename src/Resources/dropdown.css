@@ -1,0 +1,29 @@
+.dropdown-container {
+    display: inline-flex;
+}
+
+h3 {
+   cursor: default;
+}
+
+select {
+    font-family: 'Rubik', serif;
+    height: 30px;
+    margin: 15px 4px;
+    font-size: .8em;
+}
+
+@media only screen and (max-width: 800px) {
+  .dropdown-container h3 {
+      font-size: 1rem;
+    }
+
+    .dropdown-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 90%;
+      flex-wrap: wrap;
+      text-align: center;
+    }
+  }

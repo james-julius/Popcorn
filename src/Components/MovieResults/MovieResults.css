@@ -1,0 +1,9 @@
+#MovieResults {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    align-items: center;
+    justify-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+}
