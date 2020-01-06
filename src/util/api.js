@@ -4,21 +4,26 @@ const fetch = require('node-fetch');
 // Local:
 const baseUrl = 'http://localhost:5000/';
 
-const converter = (fetchedMovie) => {
-    let minusWildCard = fetchedMovie.plot.replace('*', "'")
-
-    return {
-        id: fetchedMovie.id, 
-        title: fetchedMovie.title, 
-        poster: fetchedMovie.poster, 
-        ratings: {
-            imdb: fetchedMovie.rating, 
-            metaCritic: fetchedMovie.metascore
-        },
-        runTime: fetchedMovie.runtime + ' mins',
-        releaseDate: fetchedMovie.year,
-        plot: minusWildCard
+const converter = (fetchedMovies) => {
+    let movieArray = [];
+    for (let j = 0; j < fetchedMovies.movies.length; j++) {
+        console.log('Passing through the loop')
+        let index = fetchedMovies.movies[j];
+        let minusWildCard = index.plot.replace('*', "'")
+        movieArray.push({
+            id: index.id,
+            title: index.title,
+            poster: index.poster,
+            ratings: {
+                imdb: index.rating,
+                metaCritic: index.metascore
+            },
+            runTime: index.runtime + ' mins',
+            releaseDate: index.year,
+            plot: minusWildCard
+        })
     }
+    return {movies: movieArray};
 };
 
 const Api = {
@@ -27,20 +32,13 @@ const Api = {
             const response = await fetch(baseUrl+`?genre=${genre}&minrating=${minRating}&startYear=${startYear}&endYear=${endYear}`, {mode: 'cors'})
             .then(response => response.json())
             .then(async jsonResponse => {
-                console.log(jsonResponse)
-                if (!jsonResponse.movies[0] && endYear < 2019) {alert('There are no movies that meet your search criteria! We suggest you make one =). P.S. We can lend you a time machine'); return []}
-                if (!jsonResponse.movies[0] && endYear === 2019) {alert('There are no movies that meet your search criteria! Hollywood awaits your debut next year!!'); return []}
-
+                if (!jsonResponse.movies[0] && endYear < 2019) {alert('There are no movies that meet your search criteria! We suggest you make one =). P.S. To buy a time machine from us please contact sales'); return []}
+                if (!jsonResponse.movies[0] && endYear === 2019) {alert('There are no movies that meet your search criteria. Hollywood awaits your debut next year!'); return []}
                 try {
-                    const movieOne = await jsonResponse.movies[0];
-                    const movieTwo = await jsonResponse.movies[1];
-                    const movieThree = await jsonResponse.movies[2];
-
-                    console.log(movieOne); console.log(movieTwo); console.log(movieThree); 
-                // let queriedResponse = [popcornConversion(await movieOne.json()), popcornConversion(await movieTwo.json()), popcornConversion(await movieThree.json())];
-                let convertedResponse = [await converter(movieOne), await converter(movieTwo), await converter(movieThree)];
-                console.log(convertedResponse)
-                return convertedResponse;
+                    // console.log(jsonResponse);
+                    let convertedResponse = converter(jsonResponse);
+                    // console.log('Converted Response:'); console.log(convertedResponse)
+                    return convertedResponse.movies;
                 } catch (error) {console.log(error)}
             });
             return response;

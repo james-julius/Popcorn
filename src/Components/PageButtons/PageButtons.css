@@ -19,3 +19,21 @@
   background-color: rgb(240,100,100);
   margin: 1em .2em;
 }
+
+.prevnext {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 50px;
+  color: white;
+  text-align: center;
+  font-size: 1em;
+  border-radius: 5px;
+  background-color: rgb(240,100,100);
+  margin: 1em .2em;
+}
+
+#selected {
+  color: darkslategrey;
+}

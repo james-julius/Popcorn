@@ -10,7 +10,6 @@ import Popcorn from './popcornsmooth.png';
 import LoadingGif from '../../Resources/loadingicon.svg';
 
 class App extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -25,6 +24,9 @@ class App extends React.Component {
       suggestions: [],
       multipleSuggestions: false,
       allSuggestions: [],
+      pageNum: 0,
+      lastPage: null,
+      suggestionsPerPage: 10,
       results: false
     }
 
@@ -37,40 +39,26 @@ class App extends React.Component {
     this.changeEndYear = this.changeEndYear.bind(this);
     this.searchTimeout = this.searchTimeout.bind(this);
     this.handlePageClick = this.handlePageClick.bind(this);
+    this.prevPage = this.prevPage.bind(this);
+    this.nextPage = this.nextPage.bind(this);
   }
 
   async getMovies() {
     if (this.checkYearParameters()) {
       // Code to make search button disappear
       this.setState({searchTimeout: true, loading: true})
-      // Getting results through omdb.js
+      // Getting results through api.js
       const results = await Api.getMovieData(this.state.genreSelected, this.state.minRating, this.state.startYear, this.state.endYear);
-      // console.log(results);
+      console.log(results);
       if (this.state.allSuggestions.length > 0) {this.setState({multipleSuggestions: true})}
-      const addToAllSuggestions = (newResults) => {
-        let workingArray = this.state.allSuggestions
-        workingArray.push(newResults);
-        this.setState({allSuggestions: workingArray})
-        // console.log(this.state.allSuggestions)
-      }
       if (results === []) {this.setState({searchActive: false})}
-      if (results.length <= 3) {
-        addToAllSuggestions(results)
-        this.setState({
-          suggestions: results,
-          searchActive: true,
-          loading: false
-        })
-      }
       else {
-        console.log('Results length is not three!')
-        let max3Results = results[0] + results[1] + results[2];
-        addToAllSuggestions(max3Results)
         this.setState({
-          suggestions: max3Results,
+          allSuggestions: results,
           searchActive: true,
           loading: false
         })
+        this.changePage()
       }
       // Once results in, begins 5 sec timer for button to re-appear
       setTimeout(() => {this.searchTimeout()}, 2000)
@@ -85,12 +73,28 @@ class App extends React.Component {
     this.setState({
       genreSelected: genre
     })
-    // console.log(this.state)
   }
 
   changeGrammar(input) {
     this.setState({
       grammar: input
+    })
+  }
+
+  changePage(pageNum) {
+    console.log('pageNum passed to changePage')
+    console.log(pageNum)
+    let startingIndex = (pageNum) ? pageNum * this.state.suggestionsPerPage: 0 * this.state.suggestionsPerPage;
+    let indexesToDisplay = [startingIndex];
+    for (let i = 1; i < this.state.suggestionsPerPage; i++) {
+      indexesToDisplay.push(startingIndex + i);
+    }
+    let mappedMovies = indexesToDisplay.map(index => this.state.allSuggestions[index]);
+    // console.log(mappedMovies)
+    console.log('Page Num in State:')
+    console.log(this.state.pageNum)
+    this.setState({
+      suggestions: mappedMovies
     })
   }
 
@@ -120,15 +124,32 @@ class App extends React.Component {
     })
   }
 
-  handlePageClick(suggestionsIndex) {
-    console.log(suggestionsIndex)
-    this.setState({suggestions: this.state.allSuggestions[suggestionsIndex -1]})
+  handlePageClick(pageNum) {
+    console.log('Handle page click. pageNum = ' + pageNum)
+    if (pageNum > 0 || pageNum < Math.floor(this.state.allSuggestions.length % this.state.suggestionsPerPage)) {
+    this.setState({pageNum: pageNum});
+    this.changePage(pageNum);
+    }
   }
 //SearchTimeout should be set to 4000 when ready
   searchTimeout() {
     setTimeout(() => {
       this.setState({searchTimeout: false})
     }, 100)
+  }
+
+  nextPage() {
+    if (this.state.pageNum < this.state.allSuggestions.length) {
+      this.setState({pageNum: this.state.pageNum + 1})
+      this.handlePageClick(this.state.pageNum + 1)
+    }
+  }
+
+  prevPage() {
+    if (this.state.pageNum > 1) {
+      this.setState({pageNum: this.state.pageNum - 1})
+      this.handlePageClick(this.state.pageNum - 1)
+    }
   }
 
   render() {
@@ -143,10 +164,12 @@ class App extends React.Component {
         <RatingSelector changeRating={this.changeRating} />
         <YearSelector changeStartYear={this.changeStartYear} changeEndYear={this.changeEndYear} startYear={this.state.startYear} endYear={this.state.endYear} />
       </div>
-      <button id="getmoviesbutton" onClick={this.getMovies}  className={(this.state.searchActive) ? 'pointer': null} style={{ width: (this.state.searchActive) ? 200: 180, height: (this.state.searchActive) ? 50: 40, display: (this.state.searchTimeout) ? 'none' : 'block'}}> {this.state.searchActive ? "I don't like these. Show me more!" : 'Show me the movies!'}</button>
-      <img src={LoadingGif} alt='Bouncing loading icon' style={{height: 80, width: 80, display: (this.state.loading) ? 'inline': 'none'}}/>
+      <div id="search-container">
+        <button id="getmoviesbutton" onClick={this.getMovies}  className={(this.state.searchActive) ? 'pointer': null} style={{ width: (this.state.searchActive) ? 200: 180, height: (this.state.searchActive) ? 50: 40, display: (this.state.searchTimeout) ? 'none' : 'block'}}> {this.state.searchActive ? "Search for other movies!" : 'Show me the movies!'}</button>
+        <img src={LoadingGif} alt='Bouncing loading icon' style={{height: 80, width: 80, display: (this.state.loading) ? 'inline': 'none'}}/>
+      </div>
       <MovieResults movies={this.state.suggestions}/>
-      <PageButtons allSuggestions={this.state.allSuggestions} handleClick={this.handlePageClick} multipleSuggestions={this.state.multipleSuggestions} />
+      <PageButtons allSuggestions={this.state.allSuggestions} handleClick={this.handlePageClick} suggestionsPerPage={this.state.suggestionsPerPage} pageNum={this.state.pageNum} nextPage={this.nextPage} prevPage={this.prevPage} changeLastPage={this.changeLastPage}/>
       <span id="githublink" style={{position: (this.state.searchActive) ? 'static' : 'fixed'}}>Created by <a href="https://github.com/Waterways12/">James Darby</a></span>
     </div>
   );
