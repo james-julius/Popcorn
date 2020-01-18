@@ -11,8 +11,9 @@ class PageButtons extends React.Component {
     }
 
     handleClick(event) {
+        // console.log(event)
         event.persist()
-        let pageNumber = Number(event.target.innerHTML);
+        let pageNumber = Number(event.target.value);
         this.props.handleClick(pageNumber)
     }
 
@@ -27,7 +28,8 @@ class PageButtons extends React.Component {
     createButtons(startingIndex) {
         console.log(startingIndex)
         let buttonArray = [];
-        let pagesNeeded= Math.floor(this.props.allSuggestions.length / this.props.suggestionsPerPage);
+        let pagesNeeded= Math.ceil(this.props.allSuggestions.length / this.props.suggestionsPerPage);
+        console.log('Pages Needed: ' +  pagesNeeded)
         // console.log(this.props.allSuggestions); console.log(this.props.suggestionsPerPage);
         // console.log(pagesNeeded);
         if (startingIndex >= 3) {
@@ -57,9 +59,9 @@ class PageButtons extends React.Component {
     render() {
         return (
             <div id="pagebutton-container">
-                <button className="prevnext" onClick={this.handlePrev}>Prev</button>
-                {this.createButtons(this.props.pageNum).map(index => {return <button className="pagebutton" id={(index+1 === this.props.pageNum) ? 'selected': null} onClick={this.handleClick} key={index}>{index+1}</button>})}
-                <button className="prevnext" onClick={this.handleNext}>Next</button>
+                <button style={{display: (this.props.needPagination) ? 'block' : 'none'}} className="prevnext" onClick={this.handlePrev}>Prev</button>
+                    {this.createButtons(this.props.pageNum).map(index => {return <button className="pagebutton" id={(index === this.props.pageNum) ? 'selected': null} onClick={this.handleClick} key={index} value={index}>{index+1}</button>})}
+                <button style={{display: (this.props.needPagination) ? 'block' : 'none'}} className="prevnext" onClick={this.handleNext}>Next</button>
             </div>
         )
     }

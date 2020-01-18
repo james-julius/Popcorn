@@ -27,9 +27,9 @@ const converter = (fetchedMovies) => {
 };
 
 const Api = {
-    async getMovieData(genre, minRating, startYear, endYear) {
-
-            const response = await fetch(baseUrl+`?genre=${genre}&minrating=${minRating}&startYear=${startYear}&endYear=${endYear}`, {mode: 'cors'})
+    async getMovieData(genre, minRating, startYear, endYear, sortOption) {
+            console.log(genre, minRating, startYear, endYear, sortOption);
+            const response = await fetch(baseUrl+`?genre=${genre}&minrating=${minRating}&startYear=${startYear}&endYear=${endYear}&sortOption=${sortOption}`, {mode: 'cors'})
             .then(response => response.json())
             .then(async jsonResponse => {
                 if (!jsonResponse.movies[0] && endYear < 2019) {alert('There are no movies that meet your search criteria! We suggest you make one =). P.S. To buy a time machine from us please contact sales'); return []}

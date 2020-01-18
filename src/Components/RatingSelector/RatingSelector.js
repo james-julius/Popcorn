@@ -14,7 +14,7 @@ class RatingSelector extends React.Component {
 
     render() { return (
         <div className="dropdown-container">
-            <h3>I only want to watch movies with a rating of </h3>
+            <h3>I only want to watch movies with an IMDb rating of </h3>
             <select defaultValue="7" onChange={this.handleChange}>
                 <option value="1">1/10</option>
                 <option value="2">2/10</option>
