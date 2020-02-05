@@ -185,7 +185,7 @@ class App extends React.Component {
     return (
       <div className="App">
         <div>
-          <img src={Popcorn} style={{height: 150, width: 150}}className={(this.state.searchActive) ?'logo pointer' :'logo'} alt="A popcorn icon with smiley face" onClick={this.handlePopcornClick}></img>
+          <img src={Popcorn} style={{height: 150, width: 150}} className={(this.state.searchActive) ?'logo pointer' :'logo'} alt="A popcorn icon with smiley face" onClick={this.handlePopcornClick}></img>
           <h1 style={{cursor: 'default'}}>Welcome to Popcorn</h1>
         </div>
         <div id="optionselector">
