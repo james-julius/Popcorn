@@ -198,6 +198,7 @@ class App extends React.Component {
           <img src={LoadingGif} alt='Bouncing loading icon' style={{height: 80, width: 80, display: (this.state.loading) ? 'inline': 'none'}}/>
           <SearchOptions searchActive={this.state.searchActive} handleSearchOptionChanges={this.handleSearchOptionChanges}/>
         </div>
+        <PageButtons allSuggestions={this.state.allSuggestions} needPagination={this.state.allSuggestions.length > this.state.suggestionsPerPage} handleClick={this.handlePageClick} suggestionsPerPage={this.state.suggestionsPerPage} pageNum={this.state.pageNum} nextPage={this.nextPage} prevPage={this.prevPage} changeLastPage={this.changeLastPage}/>
         <MovieResults movies={this.state.suggestions}/>
         <PageButtons allSuggestions={this.state.allSuggestions} needPagination={this.state.allSuggestions.length > this.state.suggestionsPerPage} handleClick={this.handlePageClick} suggestionsPerPage={this.state.suggestionsPerPage} pageNum={this.state.pageNum} nextPage={this.nextPage} prevPage={this.prevPage} changeLastPage={this.changeLastPage}/>
         <span id="githublink" style={{position: (this.state.searchActive) ? 'static' : 'fixed'}}>Created by <a href="https://github.com/Waterways12/">James Darby</a></span>

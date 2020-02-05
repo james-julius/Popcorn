@@ -5,7 +5,7 @@ import MetaCritic from'../../Resources/MetaCritic.png';
 
 class Movie extends React.Component {
     getAverage() {
-        if (this.props.ratings.metaCritic === 'null' || this.props.ratings.metaCritic === 'null\r') {return this.props.ratings.imdb}
+        if (this.props.ratings.metaCritic === 'null' || this.props.ratings.metaCritic === 0 || this.props.ratings.metaCritic === 'null\r') {return this.props.ratings.imdb}
         let sum =  (Number(this.props.ratings.imdb) + (Number(this.props.ratings.metaCritic))/10)/2;
         return Math.round(sum * 10)/10;
     }

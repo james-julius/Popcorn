@@ -1,8 +1,8 @@
 const fetch = require('node-fetch');
 // AWS: 
-const baseUrl = 'http://popcornapi-env.vpidtmte25.us-east-2.elasticbeanstalk.com/';
+// const baseUrl = 'http://popcornapi-env.vpidtmte25.us-east-2.elasticbeanstalk.com/';
 // Local:
-// const baseUrl = 'http://localhost:5000/';
+const baseUrl = 'http://localhost:5000/';
 
 const converter = (fetchedMovies) => {
     let movieArray = [];
