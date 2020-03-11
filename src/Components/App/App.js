@@ -201,7 +201,7 @@ class App extends React.Component {
         <PageButtons allSuggestions={this.state.allSuggestions} needPagination={this.state.allSuggestions.length > this.state.suggestionsPerPage} handleClick={this.handlePageClick} suggestionsPerPage={this.state.suggestionsPerPage} pageNum={this.state.pageNum} nextPage={this.nextPage} prevPage={this.prevPage} changeLastPage={this.changeLastPage}/>
         <MovieResults movies={this.state.suggestions}/>
         <PageButtons allSuggestions={this.state.allSuggestions} needPagination={this.state.allSuggestions.length > this.state.suggestionsPerPage} handleClick={this.handlePageClick} suggestionsPerPage={this.state.suggestionsPerPage} pageNum={this.state.pageNum} nextPage={this.nextPage} prevPage={this.prevPage} changeLastPage={this.changeLastPage}/>
-        <span id="githublink" style={{position: (this.state.searchActive) ? 'static' : 'fixed'}}>Created by <a href="https://github.com/Waterways12/">James Darby</a></span>
+        <span id="githublink" style={{position: (this.state.searchActive) ? 'static' : 'static'}}>Created by <a href="https://github.com/Waterways12/">James Darby</a></span>
       </div>
     );
   }

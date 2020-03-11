@@ -71,7 +71,6 @@ body {
 }
 
 @media only screen and (max-width: 800) {
-
   body {
     display: flex;
     flex-direction: column;
@@ -86,5 +85,12 @@ body {
       overflow: hidden;
       width: 90%;
       padding: 10px;
+    }
+    #githublink {
+      margin: 10px 20px 0px 20px;
+      padding-bottom: 2px;
+      cursor: default;
+      left: 50%;
+      transform: translate(-50%, -50%);
     }
 }
